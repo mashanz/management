@@ -70,6 +70,31 @@ router.get('/profile', function (req, res, next) {
           err.status = 400;
           return next(err);
         } else {
+          return res.send(
+            '<b>Name: </b>'
+            + user.username
+            + '&nbsp;<b>Mail: </b>&nbsp'
+            + user.email
+            + '&nbsp;<a type="button" href="#">Update</a>&nbsp;'
+            + '<a type="button" href="#">Delete</a>&nbsp;'
+            + '<a type="button" href="/logout">Logout</a>')
+        }
+      }
+    });
+});
+
+// GET router user list
+router.get('/user_list', function (req, res, next) {
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
           return res.send('<h1>Name: </h1>' + user.username + '<h2>Mail: </h2>' + user.email + '<br><a type="button" href="/logout">Logout</a>')
         }
       }
